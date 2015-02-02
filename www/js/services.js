@@ -27,15 +27,6 @@ angular.module('starter.services', [])
 
 
         return {
-            login: function(loginData) {
-                var usr;
-                users.forEach(function(u){
-                    if(u.username == loginData.username && u.password == loginData.password) {
-                        usr = u;
-                    }
-                });
-                return usr;
-            },
             all: function() {
                 return users;
             },
@@ -44,4 +35,36 @@ angular.module('starter.services', [])
                 return users[userId];
             }
         }
+    })
+
+    .factory('AuthService', function (Users, Session) {
+        var authService = {};
+
+        // Logs in a user, right now it's not using real data though.
+        authService.login = function (credentials) {
+            /**
+             * TODO: Actual login code eventually
+             */
+            var usr;
+            Users.all().forEach(function(u){
+                if(u.username == credentials.username && u.password == credentials.password) {
+                    usr = u;
+                }
+            });
+            return usr;
+        };
+
+        return authService;
+    })
+
+    .service('Session', function () {
+        this.create = function (sessionId, user) {
+            this.id = sessionId;
+            this.user = user;
+        };
+        this.destroy = function () {
+            this.id = null;
+            this.user = null;
+        };
+        return this;
     });

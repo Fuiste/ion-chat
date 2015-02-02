@@ -14,13 +14,25 @@
 
   <ion-side-menu side="left">
     <ion-header-bar class="bar-stable">
-      <h1 class="title">Left</h1>
+      <div ng-if="isAuthorized">
+        <h1 class="title">{{currentUser.name}}</h1>
+      </div>
+      <div ng-if="!isAuthorized">
+        <h1 class="title">Not logged in</h1>
+      </div>
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item nav-clear menu-close ng-click="login()">
-          Login
-        </ion-item>
+        <div ng-if="isAuthorized">
+          <ion-item nav-clear menu-close ng-click="logoutModal()">
+            Logout
+          </ion-item>
+        </div>
+        <div ng-if="!isAuthorized">
+          <ion-item nav-clear menu-close ng-click="loginModal()">
+            Login
+          </ion-item>
+        </div>
         <ion-item nav-clear menu-close href="#/app/search">
           Search
         </ion-item>
