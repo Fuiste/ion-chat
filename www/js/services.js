@@ -37,11 +37,25 @@ angular.module('starter.services', [])
         }
     })
 
-    .factory('AuthService', function (Users, Session) {
+    .factory('AuthService', function (Users, Session, $http) {
         var authService = {};
 
         // Logs in a user, right now it's not using real data though.
         authService.login = function (credentials) {
+            $http.post('http://radiant-waters-1521.herokuapp.com/api/auth/', {email: credentials.username, password: credentials.password}).
+                success(function(data, status) {
+                    console.log("Logged in user " + data + ", getting their info...");
+                    $http.get('http://radiant-waters-1521.herokuapp.com/api/chatters/' + data + '/', {}).
+                        success(function(data, status) {
+                            console.log(data);
+                        }).
+                        error(function(data, status) {
+                            // TODO: Error
+                        })
+                }).
+                error(function(data, status) {
+                    // TODO: Error
+                });
             /**
              * TODO: Actual login code eventually
              */
@@ -58,6 +72,9 @@ angular.module('starter.services', [])
     })
 
     .service('Session', function () {
+        this.getCurrentUser = function() {
+          return this.user;
+        };
         this.create = function (sessionId, user) {
             this.id = sessionId;
             this.user = user;

@@ -3,7 +3,7 @@ angular.module('starter.controllers', [])
     .controller('AppCtrl', function($scope, $ionicModal, $timeout, Users, AuthService, Session) {
       // Form data for the login modal
       $scope.loginData = {};
-      $scope.currentUser = null;
+      $scope.currentUser = Session.user;
       $scope.isAuthorized = false;
 
       $scope.setCurrentUser = function (user) {
@@ -34,7 +34,7 @@ angular.module('starter.controllers', [])
         $ionicModal.fromTemplateUrl('templates/logout.html', {
           scope: $scope
         }).then(function(modal) {
-          $scope.setCurrentUser(null);
+          //$scope.setCurrentUser(null);
           Session.destroy();
           $scope.setAuth(false);
           $scope.modal = modal;
@@ -56,24 +56,14 @@ angular.module('starter.controllers', [])
         user = AuthService.login(credentials);
         if(user){
           $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-          $scope.setCurrentUser(user);
+          //$scope.setCurrentUser(user);
           Session.create(user.id, user);
           $scope.closeLogin();
           $scope.setAuth(true);
+          console.log(Session.user.name);
         }
       };
     })
 
-    .controller('HomeCtrl', function($scope) {
-      $scope.playlists = [
-        { title: 'Reggae', id: 1 },
-        { title: 'Chill', id: 2 },
-        { title: 'Dubstep', id: 3 },
-        { title: 'Indie', id: 4 },
-        { title: 'Rap', id: 5 },
-        { title: 'Cowbell', id: 6 }
-      ];
-    })
-
-    .controller('PlaylistCtrl', function($scope, $stateParams) {
+    .controller('HomeCtrl', function($scope, Session) {
     });
