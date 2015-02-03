@@ -1,9 +1,9 @@
 angular.module('starter.controllers', [])
 
-    .controller('AppCtrl', function($scope, $ionicModal, $timeout, Users, AuthService, Session) {
+    .controller('AppCtrl', function($scope, $ionicModal, $timeout, Users, Session) {
       // Form data for the login modal
       $scope.loginData = {};
-      $scope.currentUser = Session.user;
+      $scope.currentUser = null;
       $scope.isAuthorized = false;
 
       $scope.setCurrentUser = function (user) {
@@ -34,7 +34,7 @@ angular.module('starter.controllers', [])
         $ionicModal.fromTemplateUrl('templates/logout.html', {
           scope: $scope
         }).then(function(modal) {
-          //$scope.setCurrentUser(null);
+          $scope.setCurrentUser(null);
           Session.destroy();
           $scope.setAuth(false);
           $scope.modal = modal;
@@ -44,7 +44,7 @@ angular.module('starter.controllers', [])
 
     })
 
-    .controller('LoginController', function ($scope, $rootScope, AUTH_EVENTS, AuthService, Session) {
+    .controller('LoginController', function ($scope, $rootScope, $http, AUTH_EVENTS, Session) {
       // Username and password for the modal
       $scope.credentials = {
         username: '',
@@ -53,15 +53,22 @@ angular.module('starter.controllers', [])
 
       // Calls the AuthService login function
       $scope.login = function (credentials) {
-        user = AuthService.login(credentials);
-        if(user){
-          $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-          //$scope.setCurrentUser(user);
-          Session.create(user.id, user);
-          $scope.closeLogin();
-          $scope.setAuth(true);
-          console.log(Session.user.name);
-        }
+        /**
+         * User structure, yo!
+         * {id: x, email: y, fullName: z}
+         */
+        $http.post('http://radiant-waters-1521.herokuapp.com/api/auth/', {email: credentials.username, password: credentials.password}).
+            success(function(user, status) {
+              user.fullName = user.full_name;
+              $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+              $scope.setCurrentUser(user);
+              Session.create(user.id, user);
+              $scope.closeLogin();
+              $scope.setAuth(true);
+            }).
+            error(function(data, status) {
+              // TODO: Error
+            });
       };
     })
 

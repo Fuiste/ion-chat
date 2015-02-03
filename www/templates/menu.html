@@ -15,7 +15,7 @@
   <ion-side-menu side="left">
     <ion-header-bar class="bar-stable">
       <div ng-if="isAuthorized">
-        <h1 class="title">{{currentUser.name}}</h1>
+        <h1 class="title">{{currentUser.fullName}}</h1>
       </div>
       <div ng-if="!isAuthorized">
         <h1 class="title">Not logged in</h1>
