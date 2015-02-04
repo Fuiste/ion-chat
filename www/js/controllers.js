@@ -82,12 +82,15 @@ angular.module('starter.controllers', [])
           credentials.confirmPassword = '';
         } else {
           $http.post('http://radiant-waters-1521.herokuapp.com/api/chatters/', {
-            fullName: credentials.fullName,
-            email: credentials.username,
+            full_name: credentials.fullName,
+            email: credentials.email,
             password: credentials.password,
-            imgurUrl: credentials.imgLink
+            imgur_url: credentials.imgLink,
+            groups: [],
+            user_permissions: []
           }).
               success(function(user, status) {
+                $scope.passError = false;
                 user.fullName = user.full_name;
                 user.imgurUrl = user.imgur_url;
                 $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
@@ -95,6 +98,8 @@ angular.module('starter.controllers', [])
                 Session.create(user.id, user);
                 $scope.closeLogin();
                 $scope.setAuth(true);
+                console.log(Session.user)
+                console.log($scope.currentUser)
               }).
               error(function(data, status) {
                 // TODO: Handle server errors
@@ -117,7 +122,10 @@ angular.module('starter.controllers', [])
          * User structure, yo!
          * {id: x, email: y, fullName: z}
          */
-        $http.post('http://radiant-waters-1521.herokuapp.com/api/auth/', {email: credentials.username, password: credentials.password}).
+        $http.post('http://radiant-waters-1521.herokuapp.com/api/auth/', {
+          email: credentials.username,
+          password: credentials.password
+        }).
             success(function(user, status) {
               user.fullName = user.full_name;
               user.imgurUrl = user.imgur_url;
