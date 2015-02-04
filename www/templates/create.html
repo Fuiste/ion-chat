@@ -1,0 +1,33 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Make an account</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeLogin()">Close</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <form name="loginForm" ng-submit="create(credentials)" ng-controller="CreateController">
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">Full Name (or username)</span>
+                    <input id="fullName" type="text" ng-model="credentials.fullName">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Email</span>
+                    <input id="email" type="text" ng-model="credentials.email">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Password</span>
+                    <input id="password" type="password" ng-model="credentials.password">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Confirm Password</span>
+                    <input id="confirm" type="password" ng-model="credentials.confirmPassword">
+                </label>
+                <label class="item">
+                    <button class="button button-block button-positive" type="submit">Get started, yo!</button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
+</ion-modal-view>

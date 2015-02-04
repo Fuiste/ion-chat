@@ -27,20 +27,23 @@
           <ion-item nav-clear menu-close ng-click="logoutModal()">
             Logout
           </ion-item>
+          <ion-item nav-clear menu-close href="#/app/ping">
+            Send a ping
+          </ion-item>
         </div>
         <div ng-if="!isAuthorized">
           <ion-item nav-clear menu-close ng-click="loginModal()">
             Login
           </ion-item>
+          <ion-item nav-clear menu-close ng-click="createModal()">
+            Create Account
+          </ion-item>
         </div>
-        <ion-item nav-clear menu-close href="#/app/search">
-          Search
+        <ion-item nav-clear menu-close href="#/app/home">
+          Home
         </ion-item>
-        <ion-item nav-clear menu-close href="#/app/browse">
-          Browse
-        </ion-item>
-        <ion-item nav-clear menu-close href="#/app/playlists">
-          Playlists
+        <ion-item nav-clear menu-close href="#/app/about">
+          About me
         </ion-item>
       </ion-list>
     </ion-content>

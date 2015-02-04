@@ -2,6 +2,7 @@
   <ion-content>
     <ion-list>
       <div ng-if="isAuthorized">
+        <img ng-src="{{currentUser.imgurUrl}}">
         <h1>Welcome {{currentUser.fullName}}</h1>
       </div>
   </ion-content>
