@@ -24,9 +24,17 @@
                     <span class="input-label">Confirm Password</span>
                     <input id="confirm" type="password" ng-model="credentials.confirmPassword">
                 </label>
+                <label class="item item-input">
+                    <span class="input-label">Image URL (optional)</span>
+                    <input id="img" type="text" ng-model="credentials.imgLink">
+                </label>
                 <label class="item">
                     <button class="button button-block button-positive" type="submit">Get started, yo!</button>
                 </label>
+                <div ng-if="passError">
+                    <p>Uh oh, looks like the passwords don't match...  </p>
+                    <p>Try again.</p>
+                </div>
             </div>
         </form>
     </ion-content>

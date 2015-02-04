@@ -68,12 +68,39 @@ angular.module('starter.controllers', [])
       $scope.credentials = {
         fullName: '',
         email: '',
+        imgLink: '',
         password: '',
         confirmPassword: ''
       };
 
+      $scope.passError = false;
+
       $scope.create = function (credentials) {
-        //TODO: Implement this thing.
+        if (credentials.password != credentials.confirmPassword){
+          $scope.passError = true;
+          credentials.password = '';
+          credentials.confirmPassword = '';
+        } else {
+          $http.post('http://radiant-waters-1521.herokuapp.com/api/chatters/', {
+            fullName: credentials.fullName,
+            email: credentials.username,
+            password: credentials.password,
+            imgurUrl: credentials.imgLink
+          }).
+              success(function(user, status) {
+                user.fullName = user.full_name;
+                user.imgurUrl = user.imgur_url;
+                $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+                $scope.setCurrentUser(user);
+                Session.create(user.id, user);
+                $scope.closeLogin();
+                $scope.setAuth(true);
+              }).
+              error(function(data, status) {
+                // TODO: Handle server errors
+              });
+        }
+
       };
     })
 
