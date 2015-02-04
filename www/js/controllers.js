@@ -52,6 +52,16 @@ angular.module('starter.controllers', [])
         });
       };
 
+      // Open the login modal
+      $scope.pingModal = function() {
+        $ionicModal.fromTemplateUrl('templates/ping.html', {
+          scope: $scope
+        }).then(function(modal) {
+          $scope.modal = modal;
+          $scope.modal.show();
+        });
+      };
+
       // Show the user account creation modal
       $scope.createModal = function() {
         $ionicModal.fromTemplateUrl('templates/create.html', {
@@ -62,6 +72,35 @@ angular.module('starter.controllers', [])
         });
       };
 
+    })
+
+    .controller('PingController', function($scope, $rootScope, $http) {
+      $scope.payload = {
+        username: '',
+        message: ''
+      };
+
+      $scope.pingError = false;
+
+      $scope.ping = function (payload) {
+        if (payload.message === '') {
+          $scope.pingError = true;
+        } else {
+          $http.post('http://radiant-waters-1521.herokuapp.com/api/messages/', {
+            username: payload.username,
+            userfrom: $scope.currentUser.email,
+            message: payload.message
+          }).
+              success(function(user, status) {
+                $scope.pingError = false;
+                $scope.closeLogin();
+                console.log(user);
+              }).
+              error(function(data, status) {
+                // TODO: Handle errors
+              });
+        }
+      }
     })
 
     .controller('CreateController', function ($scope, $rootScope, $http, AUTH_EVENTS, Session) {
@@ -75,8 +114,8 @@ angular.module('starter.controllers', [])
 
       $scope.passError = false;
 
-      $scope.create = function (credentials) {
-        if (credentials.password != credentials.confirmPassword){
+      $scope.createAccount = function (credentials) {
+        if (credentials.password !== credentials.confirmPassword){
           $scope.passError = true;
           credentials.password = '';
           credentials.confirmPassword = '';
@@ -98,8 +137,6 @@ angular.module('starter.controllers', [])
                 Session.create(user.id, user);
                 $scope.closeLogin();
                 $scope.setAuth(true);
-                console.log(Session.user)
-                console.log($scope.currentUser)
               }).
               error(function(data, status) {
                 // TODO: Handle server errors

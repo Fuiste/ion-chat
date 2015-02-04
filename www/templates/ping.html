@@ -1,0 +1,25 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Send a ping</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeLogin()">Close</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <form name="loginForm" ng-submit="ping(payload)" ng-controller="PingController">
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">Friend's Username</span>
+                    <input id="username" type="text" ng-model="payload.username">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Message</span>
+                    <input id="message" type="text" ng-model="payload.message">
+                </label>
+                <label class="item">
+                    <button class="button button-block button-positive" type="submit">Send it, yo!</button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
+</ion-modal-view>

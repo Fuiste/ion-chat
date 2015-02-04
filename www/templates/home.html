@@ -1,9 +1,33 @@
 <ion-view view-title="Home">
   <ion-content>
-    <ion-list>
-      <div ng-if="isAuthorized">
-        <img ng-src="{{currentUser.imgurUrl}}">
-        <h1>Welcome {{currentUser.fullName}}</h1>
+    <div ng-if="isAuthorized">
+      <div class="list card">
+        <div class="item item-avatar">
+          <img ng-src="{{currentUser.imgurUrl}}">
+          <h2>{{currentUser.fullName}}</h2>
+          <p>{{currentUser.email}}</p>
+        </div>
+        <div class="item item-body">
+          <p>Welcome to the messaging app app. Your messages are below.  Neat.</p>
+          <ion-list>
+            <ion-item ng-repeat="msg in currentUser.messageHistory">
+              <div class="item item-avatar">
+                <img ng-src="{{msg.img}}">
+                <h2>{{msg.from}}</h2>
+                <p>{{msg.text}}</p>
+              </div>
+            </ion-item>
+          </ion-list>
+        </div>
       </div>
+    </div>
+    <div ng-if="!isAuthorized">
+      <div class="card">
+        <div class="item item-text-wrap">
+          <h2>Hey there!</h2>
+          <p>Open up the sliding menu to the left to get started!</p>
+        </div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>
