@@ -36,6 +36,7 @@ angular.module('starter.controllers', [])
         }).then(function(modal) {
           $scope.modal = modal;
           $scope.modal.show();
+          console.log("Opened the login modal.");
         });
       };
 
@@ -71,7 +72,6 @@ angular.module('starter.controllers', [])
           $scope.modal.show();
         });
       };
-
     })
 
     .controller('PingController', function($scope, $rootScope, $http) {
@@ -159,11 +159,13 @@ angular.module('starter.controllers', [])
          * User structure, yo!
          * {id: x, email: y, fullName: z}
          */
+        console.log('logging in...')
         $http.post('http://radiant-waters-1521.herokuapp.com/api/auth/', {
           email: credentials.username,
           password: credentials.password
         }).
             success(function(user, status) {
+              console.log('net call success!')
               user.fullName = user.full_name;
               user.imgurUrl = user.imgur_url;
               $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
@@ -173,10 +175,36 @@ angular.module('starter.controllers', [])
               $scope.setAuth(true);
             }).
             error(function(data, status) {
+              console.log(data);
+              console.log(status);
               // TODO: Error
             });
       };
     })
 
-    .controller('HomeCtrl', function($scope, Session) {
+    .controller('HomeCtrl', function($scope, $http, Session) {
+      $scope.pushRegister = function() {
+        var req = {
+          method: 'POST',
+          url: "https://push.ionic.io/api/v1/register-device-token",
+          headers: {
+            'X-Ionic-Applicaton-Id': "2074701c",
+            'X-Ionic-API-Key': "f11c8c924f90f52df5679b206159f97"
+          },
+          data: {
+            ios_token: token,
+            metadata: {
+              userid: 101,
+              firstname: 'John'
+            }
+          }
+        };
+        $http(req)
+            .success(function(data, status) {
+              alert("Success: " + data);
+            })
+            .error(function(error, status, headers, config) {
+              alert("Error: " + error + " " + status + " " + headers);
+            });
+      }
     });

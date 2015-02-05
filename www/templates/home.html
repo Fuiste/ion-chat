@@ -8,16 +8,21 @@
           <p>{{currentUser.email}}</p>
         </div>
         <div class="item item-body">
-          <p>Welcome to the messaging app app. Your messages are below.  Neat.</p>
+          <p>Welcome to this messaging app. Your messages are below.  Neat.</p>
           <ion-list>
             <ion-item ng-repeat="msg in currentUser.messageHistory">
-              <div class="item item-avatar">
-                <img ng-src="{{msg.img}}">
-                <h2>{{msg.from}}</h2>
-                <p>{{msg.text}}</p>
+              <div class="card">
+                <div class="item item-avatar">
+                  <img ng-src="{{msg.img}}">
+                  <h2><b>{{msg.from}}</b> says...</h2>
+                  <p>"{{msg.text}}"</p>
+                </div>
               </div>
             </ion-item>
           </ion-list>
+          <button ng-click="pushRegister()" class="button button-block button-positive">
+            Register for Push!
+          </button>
         </div>
       </div>
     </div>
