@@ -146,7 +146,7 @@ angular.module('starter.controllers', [])
       };
     })
 
-    .controller('LoginController', function ($cordovaPush, $scope, $rootScope, $http, AUTH_EVENTS, Session) {
+    .controller('LoginController', function ($ionicPush, $scope, $rootScope, $http, AUTH_EVENTS, Session) {
       // Username and password for the modal
       $scope.credentials = {
         username: '',
@@ -172,6 +172,8 @@ angular.module('starter.controllers', [])
               Session.create(user.id, user);
               $scope.closeLogin();
               $scope.setAuth(true);
+
+              $ionicPush.init($scope.currentUser.id);
             }).
             error(function(data, status) {
               console.log(data);
