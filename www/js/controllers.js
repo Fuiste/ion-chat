@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-    .controller('AppCtrl', function($scope, $ionicModal, $timeout, Users, Session) {
+    .controller('AppCtrl', function($scope, $ionicModal, $timeout, Users, Session, $cordovaPush, $cordovaDialogs) {
       // Form data for the login modal
       $scope.loginData = {};
       $scope.currentUser = null;
@@ -72,6 +72,60 @@ angular.module('starter.controllers', [])
           $scope.modal.show();
         });
       };
+
+      /**
+       * Push helpers
+       */
+
+      // Notification Received
+      $scope.$on('pushNotificationReceived', function (event, notification) {
+        console.log(JSON.stringify([notification]));
+        if (ionic.Platform.isAndroid()) {
+          //TODO: Android
+        }
+        else if (ionic.Platform.isIOS()) {
+          handleIOS(notification);
+          $scope.$apply(function () {
+            $scope.notifications.push(JSON.stringify(notification.alert));
+          })
+        }
+      });
+
+      // IOS Notification Received Handler
+      function handleIOS(notification) {
+        // The app was already open but we'll still show the alert and sound the tone received this way. If you didn't check
+        // for foreground here it would make a sound twice, once when received in background and upon opening it from clicking
+        // the notification when this code runs (weird).
+        if (notification.foreground == "1") {
+          // Play custom audio if a sound specified.
+          if (notification.sound) {
+            var mediaSrc = $cordovaMedia.newMedia(notification.sound);
+            mediaSrc.promise.then($cordovaMedia.play(mediaSrc.media));
+          }
+
+          if (notification.body && notification.messageFrom) {
+            $cordovaDialogs.alert(notification.body, notification.messageFrom);
+          }
+          else $cordovaDialogs.alert(notification.alert, "Push Notification Received");
+
+          if (notification.badge) {
+            $cordovaPush.setBadgeNumber(notification.badge).then(function (result) {
+              console.log("Set badge success " + result)
+            }, function (err) {
+              console.log("Set badge error " + err)
+            });
+          }
+        }
+        // Otherwise it was received in the background and reopened from the push notification. Badge is automatically cleared
+        // in this case. You probably wouldn't be displaying anything at this point, this is here to show that you can process
+        // the data in this situation.
+        else {
+          if (notification.body && notification.messageFrom) {
+            $cordovaDialogs.alert(notification.body, "(RECEIVED WHEN APP IN BACKGROUND) " + notification.messageFrom);
+          }
+          else $cordovaDialogs.alert(notification.alert, "(RECEIVED WHEN APP IN BACKGROUND) Push Notification Received");
+        }
+      }
     })
 
     .controller('PingController', function($scope, $rootScope, $http) {
