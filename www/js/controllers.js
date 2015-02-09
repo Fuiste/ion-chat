@@ -183,7 +183,7 @@ angular.module('starter.controllers', [])
       };
     })
 
-    .controller('LoginController', function ($scope, $rootScope, $http, AUTH_EVENTS, Session) {
+    .controller('LoginController', function ($cordovaPush, $scope, $rootScope, $http, AUTH_EVENTS, Session) {
       // Username and password for the modal
       $scope.credentials = {
         username: '',
@@ -210,6 +210,43 @@ angular.module('starter.controllers', [])
               Session.create(user.id, user);
               $scope.closeLogin();
               $scope.setAuth(true);
+
+              //Register for push
+              var iosConfig = {
+                "badge": true,
+                "sound": true,
+                "alert": true
+              };
+
+              console.log('PUSH: Connecting to push api');
+
+              $cordovaPush.register(iosConfig).then(function(result) {
+                console.log("Registered?");
+
+                // Success -- send deviceToken to server, and store
+                var req = {
+                  method: 'POST',
+                  url: api + "https://push.ionic.io/api/v1/register-device-token",
+                  headers: {
+                    'X-Ionic-Applicaton-Id': $ionicApp.getId(),
+                    'X-Ionic-API-Key': $ionicApp.getApiKey()
+                  },
+                  data: {
+                    ios_token: token,
+                    metadata: {
+                      user_id: $scope.currentUser.id
+                    }
+                  }
+                };
+
+                $http(req)
+                    .success(function(data, status) {
+                      console.log("Success: " + data);
+                    })
+                    .error(function(error, status, headers, config) {
+                      console.log("Error: " + error + " " + status + " " + headers);
+                    });
+              });
             }).
             error(function(data, status) {
               console.log(data);
