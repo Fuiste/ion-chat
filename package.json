@@ -16,7 +16,6 @@
   },
   "cordovaPlugins": [
     "org.apache.cordova.console",
-    "https://github.com/phonegap-build/PushPlugin.git",
-    "https://github.com/phonegap-build/PushPlugin"
+    "https://github.com/wildpeaks/PushPlugin.git"
   ]
 }
