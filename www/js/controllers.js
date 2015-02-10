@@ -1,10 +1,11 @@
 angular.module('starter.controllers', [])
 
-    .controller('AppCtrl', function($scope, $ionicModal, $timeout, Users, Session, $cordovaPush, $cordovaDialogs) {
+    .controller('AppCtrl', function($scope, $rootScope, $ionicModal, $timeout, Users, Session, $cordovaPush, $cordovaDialogs) {
       // Form data for the login modal
       $scope.loginData = {};
       $scope.currentUser = null;
       $scope.isAuthorized = false;
+      $scope.notifications = [];
 
       /**
        * Setters
@@ -78,7 +79,7 @@ angular.module('starter.controllers', [])
        */
 
       // Notification Received
-      $scope.$on('pushNotificationReceived', function (event, notification) {
+      $rootScope.$on('pushNotificationReceived', function (event, notification) {
         console.log(JSON.stringify([notification]));
         if (ionic.Platform.isAndroid()) {
           //TODO: Android
@@ -93,11 +94,7 @@ angular.module('starter.controllers', [])
 
       // IOS Notification Received Handler
       function handleIOS(notification) {
-        // The app was already open but we'll still show the alert and sound the tone received this way. If you didn't check
-        // for foreground here it would make a sound twice, once when received in background and upon opening it from clicking
-        // the notification when this code runs (weird).
         if (notification.foreground == "1") {
-          // Play custom audio if a sound specified.
           if (notification.sound) {
             var mediaSrc = $cordovaMedia.newMedia(notification.sound);
             mediaSrc.promise.then($cordovaMedia.play(mediaSrc.media));
@@ -116,9 +113,6 @@ angular.module('starter.controllers', [])
             });
           }
         }
-        // Otherwise it was received in the background and reopened from the push notification. Badge is automatically cleared
-        // in this case. You probably wouldn't be displaying anything at this point, this is here to show that you can process
-        // the data in this situation.
         else {
           if (notification.body && notification.messageFrom) {
             $cordovaDialogs.alert(notification.body, "(RECEIVED WHEN APP IN BACKGROUND) " + notification.messageFrom);
