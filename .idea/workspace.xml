@@ -28,8 +28,8 @@
       <file leaf-file-name="controllers.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.734375" vertical-offset="180" max-vertical-offset="3645">
-              <caret line="59" column="33" selection-start-line="59" selection-start-column="33" selection-end-line="59" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.625" vertical-offset="870" max-vertical-offset="3495">
+              <caret line="98" column="70" selection-start-line="98" selection-start-column="70" selection-end-line="98" selection-end-column="70" />
               <folding />
             </state>
           </provider>
@@ -158,8 +158,8 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="2622" />
-    <option name="y" value="-340" />
+    <option name="x" value="2379" />
+    <option name="y" value="-254" />
     <option name="width" value="1374" />
     <option name="height" value="1057" />
   </component>
@@ -714,15 +714,15 @@
       <workItem from="1423235778891" duration="5713000" />
       <workItem from="1423250032829" duration="8629000" />
       <workItem from="1423260836199" duration="5709000" />
-      <workItem from="1423500746212" duration="29443000" />
+      <workItem from="1423500746212" duration="31156000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="116551000" />
+    <option name="totallyTimeSpent" value="118264000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="2622" y="-340" width="1374" height="1057" extended-state="0" />
+    <frame x="2379" y="-254" width="1374" height="1057" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1157,8 +1157,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.734375" vertical-offset="180" max-vertical-offset="3645">
-          <caret line="59" column="33" selection-start-line="59" selection-start-column="33" selection-end-line="59" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.625" vertical-offset="870" max-vertical-offset="3495">
+          <caret line="98" column="70" selection-start-line="98" selection-start-column="70" selection-end-line="98" selection-end-column="70" />
           <folding />
         </state>
       </provider>

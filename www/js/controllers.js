@@ -87,38 +87,28 @@ angular.module('starter.controllers', [])
           //TODO: Android
         }
         else if (ionic.Platform.isIOS()) {
-          console.log("iOS")
-          handleIOS(notification);
+          console.log("iOS");
+          $scope.updateMessages();
           $scope.$apply(function () {
             $scope.notifications.push(JSON.stringify(notification.alert));
           })
         }
       });
 
-      // IOS Notification Received Handler
-      function handleIOS(notification) {
-        if (notification.foreground == "1") {
-          if (notification.sound) {
-            var mediaSrc = $cordovaMedia.newMedia(notification.sound);
-            mediaSrc.promise.then($cordovaMedia.play(mediaSrc.media));
-          }
-          if (notification.body && notification.messageFrom) {
-            $cordovaDialogs.alert(notification.body, notification.messageFrom);
-          } else $cordovaDialogs.alert(notification.alert, "Push Notification Received");
-          if (notification.badge) {
-            $cordovaPush.setBadgeNumber(notification.badge).then(function (result) {
-              console.log("Set badge success " + result)
-            }, function (err) {
-              console.log("Set badge error " + err)
+      $scope.updateMessages = function() {
+        $http.get('http://radiant-waters-1521.herokuapp.com/api/update/', {
+          user_id: $scope.currentUser.id
+        }).
+            success(function(resp, status){
+              console.log("Messages updated");
+              var usr = $scope.currentUser;
+              usr.messageHistory = resp.messageHistory;
+              $scope.setCurrentUser(usr);
+            }).
+            error(function(resp, status){
+              //TODO: Error
             });
-          }
-        } else {
-          if (notification.body && notification.messageFrom) {
-            $cordovaDialogs.alert(notification.body, "(RECEIVED WHEN APP IN BACKGROUND) " + notification.messageFrom);
-          }
-          else $cordovaDialogs.alert(notification.alert, "(RECEIVED WHEN APP IN BACKGROUND) Push Notification Received");
-        }
-      }
+      };
     })
 
     .controller('PingController', function($scope, $rootScope, $http) {
