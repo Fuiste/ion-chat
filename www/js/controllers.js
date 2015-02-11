@@ -6,6 +6,7 @@ angular.module('starter.controllers', [])
       $scope.currentUser = null;
       $scope.isAuthorized = false;
       $scope.notifications = [];
+      $scope.fromEmail = '';
 
       /**
        * Setters
@@ -55,7 +56,8 @@ angular.module('starter.controllers', [])
       };
 
       // Open the login modal
-      $scope.pingModal = function() {
+      $scope.pingModal = function(email) {
+        $scope.fromEmail = email;
         $ionicModal.fromTemplateUrl('templates/ping.html', {
           scope: $scope
         }).then(function(modal) {
@@ -75,16 +77,17 @@ angular.module('starter.controllers', [])
       };
 
       /**
-       * Push helpers 
+       * Push helpers
        */
 
       // Notification Received
-      $rootScope.$on('pushNotificationReceived', function (event, notification) {
+      $scope.$on('$cordovaPush:notificationReceived', function (event, notification) {
         console.log(JSON.stringify([notification]));
         if (ionic.Platform.isAndroid()) {
           //TODO: Android
         }
         else if (ionic.Platform.isIOS()) {
+          console.log("iOS")
           handleIOS(notification);
           $scope.$apply(function () {
             $scope.notifications.push(JSON.stringify(notification.alert));
@@ -99,12 +102,9 @@ angular.module('starter.controllers', [])
             var mediaSrc = $cordovaMedia.newMedia(notification.sound);
             mediaSrc.promise.then($cordovaMedia.play(mediaSrc.media));
           }
-
           if (notification.body && notification.messageFrom) {
             $cordovaDialogs.alert(notification.body, notification.messageFrom);
-          }
-          else $cordovaDialogs.alert(notification.alert, "Push Notification Received");
-
+          } else $cordovaDialogs.alert(notification.alert, "Push Notification Received");
           if (notification.badge) {
             $cordovaPush.setBadgeNumber(notification.badge).then(function (result) {
               console.log("Set badge success " + result)
@@ -112,8 +112,7 @@ angular.module('starter.controllers', [])
               console.log("Set badge error " + err)
             });
           }
-        }
-        else {
+        } else {
           if (notification.body && notification.messageFrom) {
             $cordovaDialogs.alert(notification.body, "(RECEIVED WHEN APP IN BACKGROUND) " + notification.messageFrom);
           }
@@ -124,7 +123,7 @@ angular.module('starter.controllers', [])
 
     .controller('PingController', function($scope, $rootScope, $http) {
       $scope.payload = {
-        username: '',
+        username: $scope.fromEmail,
         message: ''
       };
 
@@ -231,29 +230,8 @@ angular.module('starter.controllers', [])
       };
     })
 
-    .controller('HomeCtrl', function($scope, $http, Session) {
-      $scope.pushRegister = function() {
-        var req = {
-          method: 'POST',
-          url: "https://push.ionic.io/api/v1/register-device-token",
-          headers: {
-            'X-Ionic-Applicaton-Id': "2074701c",
-            'X-Ionic-API-Key': "f11c8c924f90f52df5679b206159f97"
-          },
-          data: {
-            ios_token: token,
-            metadata: {
-              userid: 101,
-              firstname: 'John'
-            }
-          }
-        };
-        $http(req)
-            .success(function(data, status) {
-              alert("Success: " + data);
-            })
-            .error(function(error, status, headers, config) {
-              alert("Error: " + error + " " + status + " " + headers);
-            });
-      }
+    .controller('HomeCtrl', function($scope) {
+      $scope.reply = function(email) {
+        $scope.pingModal(email);
+      };
     });

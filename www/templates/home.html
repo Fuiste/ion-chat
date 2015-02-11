@@ -15,6 +15,7 @@
                 <img ng-src="{{msg.img}}">
                 <h2><b>{{msg.from}}</b> says...</h2>
                 <p>"{{msg.text}}"</p>
+                <button class="button button-outline button-balanced" ng-click="reply(msg.fromEmail)">Reply</button>
               </div>
             </ion-item>
           </ion-list>
