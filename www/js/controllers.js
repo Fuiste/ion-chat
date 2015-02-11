@@ -75,7 +75,7 @@ angular.module('starter.controllers', [])
       };
 
       /**
-       * Push helpers
+       * Push helpers 
        */
 
       // Notification Received
