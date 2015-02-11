@@ -11,12 +11,10 @@
           <p>Welcome to this messaging app. Your messages are below.  Neat.</p>
           <ion-list>
             <ion-item ng-repeat="msg in currentUser.messageHistory">
-              <div class="card">
-                <div class="item item-avatar">
-                  <img ng-src="{{msg.img}}">
-                  <h2><b>{{msg.from}}</b> says...</h2>
-                  <p>"{{msg.text}}"</p>
-                </div>
+              <div class="item item-avatar">
+                <img ng-src="{{msg.img}}">
+                <h2><b>{{msg.from}}</b> says...</h2>
+                <p>"{{msg.text}}"</p>
               </div>
             </ion-item>
           </ion-list>
@@ -27,7 +25,7 @@
       <div class="card">
         <div class="item item-text-wrap">
           <h2>Hey there!</h2>
-          <p>Open up the sliding menu to the left to get started!</p>
+          <p>Open up the sliding menu to the left to get started (swipe or drag to the right).</p>
         </div>
       </div>
     </div>
