@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-    .controller('AppCtrl', function($scope, $rootScope, $ionicModal, $timeout, Users, Session, $cordovaPush, $cordovaDialogs) {
+    .controller('AppCtrl', function($http, $scope, $rootScope, $ionicModal, $timeout, Users, Session, $cordovaPush, $cordovaDialogs) {
       // Form data for the login modal
       $scope.loginData = {};
       $scope.currentUser = null;
@@ -96,8 +96,11 @@ angular.module('starter.controllers', [])
       });
 
       $scope.updateMessages = function() {
+        console.log($scope.currentUser.id);
         $http.get('http://radiant-waters-1521.herokuapp.com/api/update/', {
-          user_id: $scope.currentUser.id
+          params: {
+            user_id: $scope.currentUser.id
+          }
         }).
             success(function(resp, status){
               console.log("Messages updated");
@@ -106,7 +109,7 @@ angular.module('starter.controllers', [])
               $scope.setCurrentUser(usr);
             }).
             error(function(resp, status){
-              //TODO: Error
+              console.log(resp);
             });
       };
     })
@@ -157,6 +160,10 @@ angular.module('starter.controllers', [])
           credentials.password = '';
           credentials.confirmPassword = '';
         } else {
+          if (credentials.imgLink === '') {
+            // It's Ionitron, yay!
+            credentials.imgLink = 'http://i.imgur.com/xk9rJvl.png'
+          }
           $http.post('http://radiant-waters-1521.herokuapp.com/api/chatters/', {
             full_name: credentials.fullName,
             email: credentials.email,
